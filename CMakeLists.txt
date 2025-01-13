@@ -3,10 +3,31 @@ project(Digger VERSION 0.1.0 LANGUAGES C CXX)
 
 add_subdirectory(libs/Data-Structures)
 
-add_executable(${PROJECT_NAME} main.cpp)
+find_package(SDL2 REQUIRED)
+
+set (sources
+    main.cpp
+    src/Tile.cpp
+    src/Board.cpp
+    src/Renderer.cpp
+    src/Game.cpp
+)
+
+add_executable(${PROJECT_NAME} ${sources})
+
+list(APPEND includePath
+    "include"
+    "include/Collectible"
+    "include/Entity"
+)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${includePath})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Data-Structures)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/libs/Data-Structures/include)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})
 
 include(CTest)
 enable_testing()
