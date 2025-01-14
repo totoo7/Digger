@@ -24,8 +24,15 @@ bool Game::init() {
     board = new Board(TILE_WIDTH, TILE_HEIGHT);
     board_renderer = new Renderer(renderer, TILE_WIDTH, TILE_HEIGHT);
 
+    init_collectibles();
+
     is_running = true;
     return true;
+}
+
+void Game::init_collectibles() {
+    collectibles.push_back(new Emerald(0, 0, {0, 255, 0, 255})); // Emerald
+    collectibles.push_back(new Gold(10, 10, {255, 215, 0, 255})); // Gold
 }
 
 void Game::run() {
@@ -41,6 +48,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
 
     board_renderer->render_board(*board);
+    board_renderer->render_collectibles(collectibles);
 
     SDL_RenderPresent(renderer);
 }
@@ -69,6 +77,7 @@ void Game::handle_events() {
 }
 
 void Game::update() {
+    //TODO
 }
 
 Game::~Game() {
@@ -78,6 +87,9 @@ Game::~Game() {
 void Game::deallocate() {
     delete board;
     delete board_renderer;
+    for (size_t i = 0; i < collectibles.size(); i++) {
+        delete collectibles[i];
+    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

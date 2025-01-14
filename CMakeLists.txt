@@ -11,6 +11,12 @@ set (sources
     src/Board.cpp
     src/Renderer.cpp
     src/Game.cpp
+    src/Collectible/Collectible.cpp
+    src/Collectible/Emerald.cpp
+    src/Collectible/Gold.cpp
+    src/Entity/Entity.cpp
+    src/Entity/Enemy.cpp
+    src/Entity/Player.cpp
 )
 
 add_executable(${PROJECT_NAME} ${sources})

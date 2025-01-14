@@ -18,9 +18,15 @@ void Renderer::render_board(const Board& board) const {
             SDL_RenderFillRect(renderer, &rect);
 
             //grid lines
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             SDL_RenderDrawRect(renderer, &rect);
         }
+    }
+}
+
+void Renderer::render_collectibles(const Vector<Collectible*>& collectibles) {
+    for (size_t i = 0; i < collectibles.size(); i++) {
+        collectibles[i]->render(renderer, tile_width, tile_height);
     }
 }
 
