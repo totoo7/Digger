@@ -23,8 +23,8 @@ bool Game::init() {
 
     board = new Board(TILE_WIDTH, TILE_HEIGHT);
     board_renderer = new Renderer(renderer, TILE_WIDTH, TILE_HEIGHT);
-
     init_collectibles();
+    player = new Player(5, 5, TILE_WIDTH, TILE_HEIGHT, {255, 0, 0, 255});
 
     is_running = true;
     return true;
@@ -35,12 +35,13 @@ void Game::init_collectibles() {
     collectibles.push_back(new Gold(10, 10, {255, 215, 0, 255})); // Gold
 }
 
-void Game::run() {
+bool Game::run() {
     while(is_running) {
         handle_events();
         update();
         render();
     }
+    return is_running;
 }
 
 void Game::render() {
@@ -49,35 +50,24 @@ void Game::render() {
 
     board_renderer->render_board(*board);
     board_renderer->render_collectibles(collectibles);
+    player->render(renderer, TILE_WIDTH, TILE_HEIGHT);
 
     SDL_RenderPresent(renderer);
 }
 
 void Game::handle_events() {
-    SDL_PollEvent(&event);
-
-    if (event.type == SDL_QUIT) {
-        is_running = false;
-    } else if (event.type == SDL_KEYDOWN) {
-        switch (event.key.keysym.sym) {
-            case SDLK_UP:
-                cout << "up";
-                break;
-            case SDLK_DOWN:
-                cout << "down";
-                break;
-            case SDLK_LEFT:
-                cout << "left";
-                break;
-            case SDLK_RIGHT:
-                cout << "right";
-                break;
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            is_running = false;
         }
+
+        player->handle_input(event); // Pass event to player for movement
     }
 }
 
 void Game::update() {
-    //TODO
+    player->update();
 }
 
 Game::~Game() {
@@ -87,6 +77,7 @@ Game::~Game() {
 void Game::deallocate() {
     delete board;
     delete board_renderer;
+    delete player;
     for (size_t i = 0; i < collectibles.size(); i++) {
         delete collectibles[i];
     }

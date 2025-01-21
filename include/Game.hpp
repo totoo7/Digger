@@ -6,13 +6,14 @@
 #include "Collectible.hpp"
 #include "Gold.hpp"
 #include "Emerald.hpp"
+#include "Player.hpp"
 
 class Game {
     public:
         Game() = default;
         bool init();
         void init_collectibles();
-        void run();
+        bool run();
         void update();
         void handle_events();
         void render();
@@ -20,10 +21,10 @@ class Game {
     private:
         void deallocate();
     private:
-        const int SCREEN_WIDTH = 960;
-        const int SCREEN_HEIGHT = 540;
-        const int TILE_WIDTH = 30;
-        const int TILE_HEIGHT = 30;
+        const int SCREEN_WIDTH = 800;
+        const int SCREEN_HEIGHT = 600;
+        const int TILE_WIDTH = 53;
+        const int TILE_HEIGHT = 40;
     private:
         SDL_Window* window = nullptr;
         SDL_Renderer* renderer = nullptr;
@@ -32,6 +33,7 @@ class Game {
         SDL_Event event;
         Vector<Collectible*> collectibles;
         int player_x, player_y;
+        Player* player;
         bool is_running = false;
 };
 
