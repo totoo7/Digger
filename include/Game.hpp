@@ -28,10 +28,10 @@ class Game {
     private:
         SDL_Window* window = nullptr;
         SDL_Renderer* renderer = nullptr;
-        Board* board = nullptr;
         Renderer* board_renderer = nullptr;
         Vector<Collectible*> collectibles;
         Vector<Enemy> enemies;
+        Board* board;
         int player_x, player_y;
         Player player;
         bool is_running = false;

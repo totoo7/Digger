@@ -111,7 +111,7 @@ void Game::handle_events() {
 }
 
 void Game::update() {
-    player.update();
+    player.update(*board);
 }
 
 Game::~Game() {

@@ -7,7 +7,7 @@ class Enemy : public Entity {
     public:
         Enemy() = default;
         Enemy(int x, int y, int w, int h, SDL_Color c);
-        void update() override;
+        void update(Board& board) override;
         void move(int board_width, int board_height);
     private:
 };

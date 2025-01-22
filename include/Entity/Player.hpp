@@ -7,8 +7,9 @@ class Player : public Entity {
     public:
         Player() = default;
         Player(int x, int y, int w, int, SDL_Color color);
+        void move(Board& board) override;
         void handle_input(const SDL_Event& event);
-        void update() override;
+        void update(Board& board) override;
 };
 
 #endif

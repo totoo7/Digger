@@ -10,9 +10,9 @@ class Entity {
     public:
         Entity() = default;
         Entity(int x, int y, int w, int h, SDL_Color c);
-        void move(int board_width, int board_height);
+        virtual void move(Board& board);
         virtual void render(SDL_Renderer* renderer, int tile_width, int tile_height) const;
-        virtual void update() = 0;
+        virtual void update(Board& board) = 0;
         void set_velocity(int dx, int dy);
         void set_position(int x, int y);    
         SDL_Point get_position() const;

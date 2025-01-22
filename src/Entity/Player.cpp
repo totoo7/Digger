@@ -19,6 +19,15 @@ void Player::handle_input(const SDL_Event& event) {
     }
 }
 
-void Player::update() {
-    move(BOARD_WIDTH, BOARD_HEIGHT);
+void Player::move(Board& board) {
+    Entity::move(board);
+
+    Tile& target_tile = board.get_tile(position.x, position.y);
+    if (!target_tile.is_dug) {
+        target_tile.set_dug();
+    }
+}
+
+void Player::update(Board& board) {
+    move(board);
 }

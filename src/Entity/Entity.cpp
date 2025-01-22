@@ -3,17 +3,15 @@
 Entity::Entity(int x, int y, int w, int h, SDL_Color c) :
     position({x, y}), velocity({0, 0}), width(w), height(h), color(c) {}
 
-void Entity::move(int board_width, int board_height) {
-    // Calculate the potential new positions
-    int new_x = position.x + velocity.x; // Move vertically
-    int new_y = position.y + velocity.y; // Move horizontally
+void Entity::move(Board& board) {
+    int new_x = position.x + velocity.x; 
+    int new_y = position.y + velocity.y;
 
-    // Ensure the new positions are within bounds
-    if (new_x >= 0 && new_x < board_height) {
-        position.x = new_x; // Update vertical position
+    if (new_x >= 0 && new_x < board.get_height()) {
+        position.x = new_x;
     }
-    if (new_y >= 0 && new_y < board_width) {
-        position.y = new_y; // Update horizontal position
+    if (new_y >= 0 && new_y < board.get_width()) {
+        position.y = new_y;
     }
 
     set_velocity(0, 0);
