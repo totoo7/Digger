@@ -24,7 +24,7 @@ bool Game::init() {
     board = new Board(TILE_WIDTH, TILE_HEIGHT);
     board_renderer = new Renderer(renderer, TILE_WIDTH, TILE_HEIGHT);
     //! loading level
-    ifstream ifs("../Level.txt");
+    ifstream ifs("Level.txt");
     if (!ifs) {
         cerr << "Can't load level." << endl;
         return false;
