@@ -12,7 +12,6 @@ class Entity {
         Entity(int x, int y, int w, int h, SDL_Color c);
         virtual void move(Board& board);
         virtual void render(SDL_Renderer* renderer, int tile_width, int tile_height) const;
-        virtual void update(Board& board) = 0;
         void set_velocity(int dx, int dy);
         void set_position(int x, int y);    
         SDL_Point get_position() const;

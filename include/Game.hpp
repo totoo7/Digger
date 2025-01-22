@@ -17,6 +17,7 @@ class Game {
         void update();
         void handle_events();
         void render();
+        SDL_Point get_player_position();
         ~Game();
     private:
         void deallocate();
@@ -32,7 +33,6 @@ class Game {
         Vector<Collectible*> collectibles;
         Vector<Enemy> enemies;
         Board* board;
-        int player_x, player_y;
         Player player;
         bool is_running = false;
 };

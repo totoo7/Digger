@@ -112,6 +112,13 @@ void Game::handle_events() {
 
 void Game::update() {
     player.update(*board);
+    for (auto& enemy : enemies) {
+        enemy.update(*board, get_player_position());
+    }
+}
+
+SDL_Point Game::get_player_position() {
+    return player.get_position();
 }
 
 Game::~Game() {
@@ -121,7 +128,6 @@ Game::~Game() {
 void Game::deallocate() {
     delete board;
     delete board_renderer;
-    // delete player;
     for (size_t i = 0; i < collectibles.size(); i++) {
         delete collectibles[i];
     }
