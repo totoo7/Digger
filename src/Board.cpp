@@ -8,6 +8,6 @@ Board::Board(size_t width, size_t height) : tile_width(width), tile_height(heigh
     }
 }
 
-const Tile& Board::get_tile(int x, int y) const {
+Tile& Board::get_tile(int x, int y) {
     return board[x][y];
 }

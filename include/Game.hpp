@@ -13,7 +13,6 @@ class Game {
     public:
         Game() = default;
         bool init();
-        void init_collectibles();
         bool run();
         void update();
         void handle_events();
@@ -31,7 +30,6 @@ class Game {
         SDL_Renderer* renderer = nullptr;
         Board* board = nullptr;
         Renderer* board_renderer = nullptr;
-        // SDL_Event event;
         Vector<Collectible*> collectibles;
         Vector<Enemy> enemies;
         int player_x, player_y;

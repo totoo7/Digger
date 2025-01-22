@@ -12,6 +12,7 @@ struct Tile {
     bool has_entity = false;
     bool has_collectible = false;
     Tile()=default;
+    Tile& operator=(const Tile& rhs) = default;
     Tile(int x, int y, SDL_Color color);
 };
 

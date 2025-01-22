@@ -3,10 +3,10 @@
 Renderer::Renderer(SDL_Renderer* sdl_renderer, int t_width, int t_height)
         : renderer(sdl_renderer), tile_width(t_width), tile_height(t_height) {}
 
-void Renderer::render_board(const Board& board) const {
+void Renderer::render_board(Board& board) {
     for (size_t x = 0; x < BOARD_HEIGHT; ++x) {
         for (size_t y = 0; y < BOARD_WIDTH; ++y) {
-            const Tile& tile = board.get_tile(x, y);
+            Tile& tile = board.get_tile(x, y);
             SDL_Rect rect = {
                 tile.position.x * tile_width,
                 tile.position.y * tile_height,
@@ -29,4 +29,15 @@ void Renderer::render_collectibles(const Vector<Collectible*>& collectibles) {
         collectibles[i]->render(renderer, tile_width, tile_height);
     }
 }
+
+void Renderer::render_enemies(const Vector<Enemy>& enemies) {
+    for (size_t i = 0; i < enemies.size(); i++) {
+        enemies[i].render(renderer, tile_width, tile_height);
+    }
+}
+
+void Renderer::render_player(const Player& player) {
+    player.render(renderer, tile_width, tile_height);
+}
+
 

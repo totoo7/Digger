@@ -39,34 +39,35 @@ bool Game::init() {
             ++y;
             continue;
         }
-
+        Tile& tile = board->get_tile(x, y);
         switch (tile_value) {
             case '0':
                 // Empty
-                board->board[x][y] = Tile(x, y, {0, 0, 0, 0});
-                board->board[x][y].is_dug = true;
+                tile = Tile(x, y, {0, 0, 0, 0});
+                tile.is_dug = true;
                 break;  
             case '1': // Regular tile (block)
-                board->board[x][y] = Tile(x, y, {104, 72, 35, 1});
+                tile = Tile(x, y, {104, 72, 35, 1});
+                tile.is_dug = false;
                 break;
             case '2': // Player tile
                 player = Player(x, y, TILE_WIDTH, TILE_HEIGHT, {149, 20, 121, 1});
-                board->board[x][y].has_entity = true;
+                tile.has_entity = true;
                 break;
             case '3': // Enemy tile
                 enemies.push_back(Enemy(x, y, TILE_WIDTH, TILE_HEIGHT, {255, 0, 0, 1}));
-                board->board[x][y].has_entity = true;
+                tile.has_entity = true;
                 break;
             case '4': // Emerald tile
                 collectibles.push_back(new Emerald(x, y, {0, 255, 0, 255}));
-                board->board[x][y].has_collectible = true;
+                tile.has_collectible = true;
                 break;
             case '5': // Gold tile
                 collectibles.push_back(new Gold(x, y, {255, 215, 0, 255}));
-                board->board[x][y].has_collectible = true;
+                tile.has_collectible = true;
                 break;
             default:
-                board->board[x][y] = Tile(x, y, {0, 0, 0, 255});
+                tile = Tile(x, y, {0, 0, 0, 255});
                 break;
         }
 
@@ -77,11 +78,6 @@ bool Game::init() {
 
     is_running = true;
     return true;
-}
-
-void Game::init_collectibles() {
-    collectibles.push_back(new Emerald(0, 0, {0, 255, 0, 255})); // Emerald
-    collectibles.push_back(new Gold(10, 10, {255, 215, 0, 255})); // Gold
 }
 
 bool Game::run() {
@@ -99,10 +95,8 @@ void Game::render() {
 
     board_renderer->render_board(*board);
     board_renderer->render_collectibles(collectibles);
-    player.render(renderer, TILE_WIDTH, TILE_HEIGHT);
-    for (size_t i = 0; i < enemies.size(); i++) {
-        enemies[i].render(renderer, TILE_WIDTH, TILE_HEIGHT);
-    }
+    board_renderer->render_enemies(enemies);
+    board_renderer->render_player(player);
     SDL_RenderPresent(renderer);
 }
 

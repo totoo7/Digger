@@ -8,7 +8,7 @@ const int BOARD_HEIGHT = 15;
 class Board {
     public:
         Board(size_t width, size_t height); 
-        const Tile& get_tile(int x, int y) const;
+        Tile& get_tile(int x, int y);
         const int get_width() const { return BOARD_WIDTH; }
         const int get_height() const { return BOARD_HEIGHT; }
     public:
