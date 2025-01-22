@@ -15,7 +15,7 @@ bool Game::init() {
         SDL_Log("Window could not be created! SDL_Error: %s", SDL_GetError());
         return false;
     }
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     if (!renderer) {
         SDL_Log("Renderer could not be created! SDL_Error: %s", SDL_GetError());
         return false;
@@ -23,7 +23,7 @@ bool Game::init() {
 
     board = new Board(TILE_WIDTH, TILE_HEIGHT);
     board_renderer = new Renderer(renderer, TILE_WIDTH, TILE_HEIGHT);
-    // //!loading level
+    //! loading level
     ifstream ifs("../Level.txt");
     if (!ifs) {
         cerr << "Can't load level." << endl;
@@ -73,7 +73,7 @@ bool Game::init() {
         ++x;
     }
     ifs.close();
-    // //!
+    //!
 
     is_running = true;
     return true;
