@@ -23,8 +23,57 @@ bool Game::init() {
 
     board = new Board(TILE_WIDTH, TILE_HEIGHT);
     board_renderer = new Renderer(renderer, TILE_WIDTH, TILE_HEIGHT);
-    init_collectibles();
-    player = new Player(5, 5, TILE_WIDTH, TILE_HEIGHT, {255, 0, 0, 255});
+    // //!loading level
+    ifstream ifs("../Level.txt");
+    if (!ifs) {
+        cerr << "Can't load level." << endl;
+        return false;
+    }
+
+    int x = 0, y = 0;
+    char tile_value;
+    
+    while (ifs.get(tile_value)) {
+        if (tile_value == '\n') {
+            x = 0;
+            ++y;
+            continue;
+        }
+
+        switch (tile_value) {
+            case '0':
+                // Empty
+                board->board[x][y] = Tile(x, y, {0, 0, 0, 0});
+                board->board[x][y].is_dug = true;
+                break;  
+            case '1': // Regular tile (block)
+                board->board[x][y] = Tile(x, y, {104, 72, 35, 1});
+                break;
+            case '2': // Player tile
+                player = Player(x, y, TILE_WIDTH, TILE_HEIGHT, {149, 20, 121, 1});
+                board->board[x][y].has_entity = true;
+                break;
+            case '3': // Enemy tile
+                enemies.push_back(Enemy(x, y, TILE_WIDTH, TILE_HEIGHT, {255, 0, 0, 1}));
+                board->board[x][y].has_entity = true;
+                break;
+            case '4': // Emerald tile
+                collectibles.push_back(new Emerald(x, y, {0, 255, 0, 255}));
+                board->board[x][y].has_collectible = true;
+                break;
+            case '5': // Gold tile
+                collectibles.push_back(new Gold(x, y, {255, 215, 0, 255}));
+                board->board[x][y].has_collectible = true;
+                break;
+            default:
+                board->board[x][y] = Tile(x, y, {0, 0, 0, 255});
+                break;
+        }
+
+        ++x;
+    }
+    ifs.close();
+    // //!
 
     is_running = true;
     return true;
@@ -50,8 +99,10 @@ void Game::render() {
 
     board_renderer->render_board(*board);
     board_renderer->render_collectibles(collectibles);
-    player->render(renderer, TILE_WIDTH, TILE_HEIGHT);
-
+    player.render(renderer, TILE_WIDTH, TILE_HEIGHT);
+    for (size_t i = 0; i < enemies.size(); i++) {
+        enemies[i].render(renderer, TILE_WIDTH, TILE_HEIGHT);
+    }
     SDL_RenderPresent(renderer);
 }
 
@@ -61,13 +112,12 @@ void Game::handle_events() {
         if (event.type == SDL_QUIT) {
             is_running = false;
         }
-
-        player->handle_input(event); // Pass event to player for movement
+        player.handle_input(event);
     }
 }
 
 void Game::update() {
-    player->update();
+    player.update();
 }
 
 Game::~Game() {
@@ -77,7 +127,7 @@ Game::~Game() {
 void Game::deallocate() {
     delete board;
     delete board_renderer;
-    delete player;
+    // delete player;
     for (size_t i = 0; i < collectibles.size(); i++) {
         delete collectibles[i];
     }

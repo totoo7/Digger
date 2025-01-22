@@ -13,7 +13,6 @@ int main(int argc, char* argv[]) {
     }
     while (game.run()) {
         frame_start = SDL_GetTicks();
-        game.run();
         frame_time = SDL_GetTicks() - frame_start;
         if (frame_time < FRAME_DELAY) {
             int ms = FRAME_DELAY - frame_time;

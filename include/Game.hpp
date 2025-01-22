@@ -6,8 +6,9 @@
 #include "Collectible.hpp"
 #include "Gold.hpp"
 #include "Emerald.hpp"
+#include "Enemy.hpp"
 #include "Player.hpp"
-
+#include <fstream>
 class Game {
     public:
         Game() = default;
@@ -30,10 +31,11 @@ class Game {
         SDL_Renderer* renderer = nullptr;
         Board* board = nullptr;
         Renderer* board_renderer = nullptr;
-        SDL_Event event;
+        // SDL_Event event;
         Vector<Collectible*> collectibles;
+        Vector<Enemy> enemies;
         int player_x, player_y;
-        Player* player;
+        Player player;
         bool is_running = false;
 };
 
