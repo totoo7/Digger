@@ -11,13 +11,6 @@ int main(int argc, char* argv[]) {
         SDL_Log("Failed to initialize the game!");
         return -1;
     }
-    while (game.run()) {
-        frame_start = SDL_GetTicks();
-        frame_time = SDL_GetTicks() - frame_start;
-        if (frame_time < FRAME_DELAY) {
-            int ms = FRAME_DELAY - frame_time;
-            SDL_Delay(ms);
-        }
-    }
+    game.run();
     return 0;
 }

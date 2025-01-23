@@ -4,6 +4,7 @@
 #include "Entity.hpp"
 #include "Vector/Vector.hpp"
 #include "Queue/CircularQueue.hpp"
+#include <chrono>
 
 class Enemy : public Entity {
     public:
@@ -15,6 +16,7 @@ class Enemy : public Entity {
         Vector<SDL_Point> BFS(Board& board, SDL_Point position, SDL_Point target);
     private:
         Vector<SDL_Point> path;
+        chrono::time_point< chrono::high_resolution_clock > last_update_time = chrono::high_resolution_clock::now();
         size_t current_path_index = 0;
 };
 
