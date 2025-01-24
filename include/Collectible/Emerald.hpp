@@ -6,7 +6,7 @@
 class Emerald : public Collectible {
     public:
         Emerald(int x, int y, SDL_Color color);
-        void update() override;
+        void update(Board& board) override;
         void render(SDL_Renderer* renderer, int tile_width, int tile_height) const override;
 };
 

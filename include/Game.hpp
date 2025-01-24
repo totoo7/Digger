@@ -32,7 +32,7 @@ class Game {
         Renderer* board_renderer = nullptr;
         Vector<Collectible*> collectibles;
         Vector<Enemy> enemies;
-        Board* board;
+        Board* board = nullptr;
         Player player;
         bool is_running = false;
 };

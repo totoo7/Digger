@@ -112,6 +112,18 @@ void Game::handle_events() {
 
 void Game::update() {
     player.update(*board);
+    for (size_t i = 0; i < collectibles.size(); ++i) {
+        if (collectibles[i]->get_position().x == player.get_position().x &&
+            collectibles[i]->get_position().y == player.get_position().y) {
+            if (dynamic_cast<Emerald*>(collectibles[i])) {
+                std::swap(collectibles[i], collectibles[collectibles.size()-1]);
+                collectibles.pop_back();
+                player.add_score();
+                cout << player.get_score() << endl;
+            }
+        }
+        collectibles[i]->update(*board);
+    }
     for (auto& enemy : enemies) {
         enemy.update(*board, get_player_position());
     }
