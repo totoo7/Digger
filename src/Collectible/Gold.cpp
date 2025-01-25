@@ -17,6 +17,7 @@ void Gold::update(Board& board) {
             is_falling = false;
             if (fall_distance > 1) {
                 is_broken = true;
+                color = {255, 148, 112, 1};
             }
             fall_distance = 0;
         }

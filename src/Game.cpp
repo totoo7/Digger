@@ -137,7 +137,7 @@ void Game::update() {
                 player.add_score();
                 cout << player.get_score() << endl;
                 break;
-            } else if (dynamic_cast<Gold*>(collectibles[i])) {
+            } else if (!dynamic_cast<Gold*>(collectibles[i])->get_is_broken()) {
                 for (size_t j = 0; j < enemies.size(); j++) {
                     if (collectibles[i]->get_position().x == enemies[j].get_position().x &&
                         collectibles[i]->get_position().y == enemies[j].get_position().y) {
@@ -150,6 +150,8 @@ void Game::update() {
                         respawn();
                     }
                 }
+            } else if (dynamic_cast<Gold*>(collectibles[i])->get_is_broken()) {
+
             }
         }
         collectibles[i]->update(*board);

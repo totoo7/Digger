@@ -8,6 +8,7 @@ class Gold : public Collectible {
         Gold(int x, int y, SDL_Color color);
         void update(Board& board) override;
         void render(SDL_Renderer* renderer, int tile_width, int tile_height) const override;
+        bool get_is_broken() const { return is_broken; };
     private:
         bool is_falling = false;
         bool is_broken = false;
