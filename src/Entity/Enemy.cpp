@@ -72,6 +72,12 @@ void Enemy::move(Board& board, SDL_Point player_position) {
         }
 }
 
+void Enemy::clear_path() {
+    while (!path.empty()) {
+        path.pop_back();
+    }
+}
+
 void Enemy::update(Board& board, SDL_Point player_position) {
     move(board, player_position);
 }

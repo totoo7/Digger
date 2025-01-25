@@ -12,6 +12,7 @@ class Enemy : public Entity {
         Enemy(int x, int y, int w, int h, SDL_Color c);
         void update(Board& board, SDL_Point player_position);
         void move(Board& board, SDL_Point player);
+        void clear_path();
     private:
         Vector<SDL_Point> BFS(Board& board, SDL_Point position, SDL_Point target);
     private:

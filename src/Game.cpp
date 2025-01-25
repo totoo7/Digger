@@ -53,9 +53,12 @@ bool Game::init() {
             case '2': // Player tile
                 player = Player(x, y, TILE_WIDTH, TILE_HEIGHT, {149, 20, 121, 1});
                 tile.has_entity = true;
+                player_spawn_position.x = x;
+                player_spawn_position.y = y;
                 break;
             case '3': // Enemy tile
                 enemies.push_back(Enemy(x, y, TILE_WIDTH, TILE_HEIGHT, {255, 0, 0, 1}));
+                enemy_spawns.push_back({x, y});
                 tile.has_entity = true;
                 break;
             case '4': // Emerald tile
@@ -110,7 +113,20 @@ void Game::handle_events() {
     }
 }
 
+void Game::respawn() {
+    auto current_time = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> time_since_death(current_time - last_death_time);
+    if (time_since_death.count() >= respawn_time) {
+        player.set_position(player_spawn_position.x, player_spawn_position.y);
+        for (size_t i = 0; i < enemies.size(); i++) {
+            enemies[i].set_position(enemy_spawns[i].x, enemy_spawns[i].y);
+            enemies[i].clear_path();
+        }
+    }
+}
+
 void Game::update() {
+    if (player.get_lives() == 0) is_running = false;
     player.update(*board);
     for (size_t i = 0; i < collectibles.size(); ++i) {
         if (collectibles[i]->get_position().x == player.get_position().x &&
@@ -120,12 +136,31 @@ void Game::update() {
                 collectibles.pop_back();
                 player.add_score();
                 cout << player.get_score() << endl;
+                break;
+            } else if (dynamic_cast<Gold*>(collectibles[i])) {
+                for (size_t j = 0; j < enemies.size(); j++) {
+                    if (collectibles[i]->get_position().x == enemies[j].get_position().x &&
+                        collectibles[i]->get_position().y == enemies[j].get_position().y) {
+                            std::swap(enemies[j], enemies[enemies.size()-1]);
+                            enemies.pop_back();
+                            break;
+                    } else if (collectibles[i]->get_position().x == player.get_position().x &&
+                                collectibles[i]->get_position().y == player.get_position().y)  {
+                        player.death();
+                        respawn();
+                    }
+                }
             }
         }
         collectibles[i]->update(*board);
     }
     for (auto& enemy : enemies) {
         enemy.update(*board, get_player_position());
+        if (enemy.get_position().x == player.get_position().x &&
+            enemy.get_position().y == player.get_position().y) {
+            player.death();
+            respawn();
+        }
     }
 }
 

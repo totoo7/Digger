@@ -18,6 +18,8 @@ class Game {
         void handle_events();
         void render();
         SDL_Point get_player_position();
+        SDL_Point get_player_spawn_position() { return player_spawn_position; };
+        void respawn();
         ~Game();
     private:
         void deallocate();
@@ -32,8 +34,12 @@ class Game {
         Renderer* board_renderer = nullptr;
         Vector<Collectible*> collectibles;
         Vector<Enemy> enemies;
+        Vector<SDL_Point> enemy_spawns;
         Board* board = nullptr;
         Player player;
+        SDL_Point player_spawn_position;
+        std::chrono::time_point<std::chrono::high_resolution_clock> last_death_time;
+        const double respawn_time = 5.0;
         bool is_running = false;
 };
 

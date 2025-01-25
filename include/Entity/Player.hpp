@@ -12,6 +12,8 @@ class Player : public Entity {
         void update(Board& board);
         int get_score() const { return score; };
         void add_score() { score += 50; };
+        void death() { lives--; };
+        int get_lives() const { return lives; };
     private:
         int lives = 3;
         int score = 0;
