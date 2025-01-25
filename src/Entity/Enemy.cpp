@@ -51,12 +51,15 @@ Vector<SDL_Point> Enemy::BFS(Board& board, SDL_Point start, SDL_Point target) {
     return {};
 }
 
-void Enemy::move(Board& board, SDL_Point playerPosition) {
+void Enemy::move(Board& board, SDL_Point player_position) {
     auto current_time = std::chrono::high_resolution_clock::now();
         chrono::duration<double> time_since_last_update(current_time - last_update_time);
-        if (time_since_last_update.count() >= 0.7) { // Update every 0.7 seconds
+        if (time_since_last_update.count() >= 0.5) { // Update every 0.5 seconds
             if (path.empty() || current_path_index >= path.size()) {
-                path = BFS(board, position, playerPosition);
+                path = BFS(board, position, player_position);
+                current_path_index = 0;
+            } else if (player_position.x != path.back().x && player_position.y != path.back().y) {
+                path = BFS(board, position, player_position);
                 current_path_index = 0;
             }
 
