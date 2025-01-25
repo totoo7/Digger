@@ -11,6 +11,7 @@ void Player::handle_input(const SDL_Event& event) {
             case SDLK_DOWN:  set_velocity(0, 1); break;  // Move down
             case SDLK_LEFT:  set_velocity(-1, 0); break; // Move left
             case SDLK_RIGHT: set_velocity(1, 0); break;  // Move right
+            case SDLK_SPACE: cout << "TODO" << endl;
             default: set_velocity(0, 0); break;
         }
     }

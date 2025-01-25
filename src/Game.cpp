@@ -78,7 +78,7 @@ bool Game::init() {
     }
     ifs.close();
     //!
-
+    enemy_count = enemies.size();
     is_running = true;
     return true;
 }
@@ -125,15 +125,30 @@ void Game::respawn() {
     }
 }
 
+void Game::kill_enemy(size_t index) {
+    std::swap(enemies[index], enemies[enemies.size()-1]);
+    enemies.pop_back();
+}
+
+void Game::remove_collectible(size_t index) {
+    std::swap(collectibles[index], collectibles[collectibles.size()-1]);
+    collectibles.pop_back();
+}
+
 void Game::update() {
     if (player.get_lives() == 0) is_running = false;
+    if (collectibles.empty()) is_running = false;
+    if (enemies.size() < enemy_count) {
+        int range = enemies.size() + 1;
+        int num = rand() % range;
+        enemies.push_back(Enemy(enemy_spawns[num].x, enemy_spawns[num].y, TILE_WIDTH, TILE_HEIGHT, {255, 0, 0, 1}));
+    }
     player.update(*board);
     for (size_t i = 0; i < collectibles.size(); ++i) {
         if (collectibles[i]->get_position().x == player.get_position().x &&
             collectibles[i]->get_position().y == player.get_position().y) {
             if (dynamic_cast<Emerald*>(collectibles[i])) {
-                std::swap(collectibles[i], collectibles[collectibles.size()-1]);
-                collectibles.pop_back();
+                remove_collectible(i);
                 player.add_score();
                 cout << player.get_score() << endl;
                 break;
@@ -141,8 +156,7 @@ void Game::update() {
                 for (size_t j = 0; j < enemies.size(); j++) {
                     if (collectibles[i]->get_position().x == enemies[j].get_position().x &&
                         collectibles[i]->get_position().y == enemies[j].get_position().y) {
-                            std::swap(enemies[j], enemies[enemies.size()-1]);
-                            enemies.pop_back();
+                            kill_enemy(j);
                             break;
                     } else if (collectibles[i]->get_position().x == player.get_position().x &&
                                 collectibles[i]->get_position().y == player.get_position().y)  {

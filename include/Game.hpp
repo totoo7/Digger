@@ -20,6 +20,8 @@ class Game {
         SDL_Point get_player_position();
         SDL_Point get_player_spawn_position() { return player_spawn_position; };
         void respawn();
+        void kill_enemy(size_t index);
+        void remove_collectible(size_t index);
         ~Game();
     private:
         void deallocate();
@@ -39,7 +41,9 @@ class Game {
         Player player;
         SDL_Point player_spawn_position;
         std::chrono::time_point<std::chrono::high_resolution_clock> last_death_time;
-        const double respawn_time = 5.0;
+        std::chrono::time_point<std::chrono::high_resolution_clock> last_spawn_time = std::chrono::high_resolution_clock::now();
+        const double respawn_time = 1000;
+        int enemy_count;
         bool is_running = false;
 };
 
