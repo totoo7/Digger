@@ -131,6 +131,7 @@ void Game::kill_enemy(size_t index) {
 }
 
 void Game::remove_collectible(size_t index) {
+    delete collectibles[index];
     std::swap(collectibles[index], collectibles[collectibles.size()-1]);
     collectibles.pop_back();
 }

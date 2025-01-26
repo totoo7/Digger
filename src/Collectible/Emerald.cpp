@@ -4,7 +4,7 @@ Emerald::Emerald(int x, int y, SDL_Color color) :
     Collectible(x, y, color) {}
 
 void Emerald::update(Board& board) {
-    //TODO
+    return;
 }
 
 void Emerald::render(SDL_Renderer* renderer, int tile_width, int tile_height) const {
